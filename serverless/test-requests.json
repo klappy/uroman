@@ -1,0 +1,146 @@
+{
+  "health_check": {
+    "method": "GET",
+    "url": "/health",
+    "description": "Health check endpoint"
+  },
+  "tools_list": {
+    "method": "POST",
+    "url": "/",
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "jsonrpc": "2.0",
+      "method": "tools/list",
+      "id": 1
+    },
+    "description": "List available MCP tools"
+  },
+  "romanize_japanese": {
+    "method": "POST",
+    "url": "/",
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "jsonrpc": "2.0",
+      "method": "tools/call",
+      "params": {
+        "name": "romanize",
+        "arguments": {
+          "text": "こんにちは",
+          "language": "jpn"
+        }
+      },
+      "id": 2
+    },
+    "description": "Romanize Japanese text"
+  },
+  "romanize_chinese": {
+    "method": "POST",
+    "url": "/",
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "jsonrpc": "2.0",
+      "method": "tools/call",
+      "params": {
+        "name": "romanize",
+        "arguments": {
+          "text": "你好世界",
+          "language": "zho"
+        }
+      },
+      "id": 3
+    },
+    "description": "Romanize Chinese text"
+  },
+  "romanize_arabic": {
+    "method": "POST",
+    "url": "/",
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "jsonrpc": "2.0",
+      "method": "tools/call",
+      "params": {
+        "name": "romanize",
+        "arguments": {
+          "text": "مرحبا بالعالم",
+          "language": "ara"
+        }
+      },
+      "id": 4
+    },
+    "description": "Romanize Arabic text"
+  },
+  "romanize_batch": {
+    "method": "POST",
+    "url": "/",
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "jsonrpc": "2.0",
+      "method": "tools/call",
+      "params": {
+        "name": "romanize_batch",
+        "arguments": {
+          "texts": [
+            "こんにちは",
+            "你好",
+            "مرحبا",
+            "Здравствуйте",
+            "สวัสดี"
+          ]
+        }
+      },
+      "id": 5
+    },
+    "description": "Batch romanize multiple languages"
+  },
+  "detect_script": {
+    "method": "POST",
+    "url": "/",
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "jsonrpc": "2.0",
+      "method": "tools/call",
+      "params": {
+        "name": "detect_script",
+        "arguments": {
+          "text": "Hello 你好 こんにちは مرحبا",
+          "detailed": true
+        }
+      },
+      "id": 6
+    },
+    "description": "Detect scripts in mixed-language text"
+  },
+  "romanize_with_edges": {
+    "method": "POST",
+    "url": "/",
+    "headers": {
+      "Content-Type": "application/json"
+    },
+    "body": {
+      "jsonrpc": "2.0",
+      "method": "tools/call",
+      "params": {
+        "name": "romanize",
+        "arguments": {
+          "text": "東京都",
+          "language": "jpn",
+          "format": "edges"
+        }
+      },
+      "id": 7
+    },
+    "description": "Romanize with edge format (detailed output)"
+  }
+} 

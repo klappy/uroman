@@ -7,7 +7,17 @@
     "test": "tests"
   },
   "scripts": {
-    "test": "echo \"Error: no test specified\" && exit 1"
+    "build": "tsc && npm run build:adapters",
+    "build:adapters": "npm run build:cloudflare && npm run build:netlify && npm run build:vercel && npm run build:aws",
+    "build:cloudflare": "node deploy/cloudflare/build.js",
+    "build:netlify": "esbuild src/adapters/netlify.ts --bundle --format=cjs --target=node18 --outfile=deploy/netlify/functions/mcp-server.js --external:uroman",
+    "build:vercel": "esbuild src/adapters/vercel.ts --bundle --format=cjs --target=node18 --outfile=deploy/vercel/api/mcp-server.js --external:uroman",
+    "build:aws": "esbuild src/adapters/aws-lambda.ts --bundle --format=cjs --target=node18 --outfile=deploy/aws/index.js --external:uroman",
+    "dev": "tsx src/adapters/local.ts",
+    "test": "node run-tests.js",
+    "test:core": "node run-tests.js --core", 
+    "test:mcp": "node run-tests.js --mcp",
+    "type-check": "tsc --noEmit"
   },
   "keywords": [],
   "author": "",

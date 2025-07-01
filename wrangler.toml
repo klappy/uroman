@@ -1,0 +1,38 @@
+name = "uroman-mcp-server"
+main = "serverless/dist/cloudflare.js"
+compatibility_date = "2024-01-01"
+
+# Workers configuration
+[env.production]
+name = "uroman-mcp-server"
+
+[env.staging]
+name = "uroman-mcp-server-staging"
+
+# Environment variables
+[vars]
+UROMAN_CACHE_SIZE = "1000"
+UROMAN_LOG_LEVEL = "info"
+
+# Resource limits
+[limits]
+cpu_ms = 10000  # 10 seconds CPU time limit
+
+# Build configuration for GitHub integration
+[build]
+command = "cd serverless && npm install && npm run build:cloudflare"
+cwd = "."
+watch_dir = ["serverless/src", "src"]
+
+# Optional: KV storage for caching
+# [kv_namespaces]
+# { binding = "UROMAN_CACHE", id = "your-kv-namespace-id", preview_id = "your-preview-kv-namespace-id" }
+
+# Optional: Analytics
+# [analytics_engine_datasets]
+# { binding = "ANALYTICS", dataset = "uroman_analytics" }
+
+# Routes (uncomment and configure for custom domain)
+# [[route]]
+# pattern = "uroman-api.yourdomain.com/*"
+# zone_name = "yourdomain.com" 

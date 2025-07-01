@@ -68,3 +68,6 @@ dist
 # old Perl uroman
 bin/uroman.py
 lib/NLP/Romanizer.pm
+
+*/node_modules/*
+node_modules/

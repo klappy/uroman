@@ -1,0 +1,134 @@
+name: Deploy to Cloudflare Workers
+
+on:
+  push:
+    branches:
+      - main
+      - master
+    paths:
+      - 'serverless/**'
+      - 'src/**'
+      - 'wrangler.toml'
+      - '.github/workflows/deploy-cloudflare.yml'
+  pull_request:
+    branches:
+      - main
+      - master
+    paths:
+      - 'serverless/**'
+      - 'src/**'
+      - 'wrangler.toml'
+
+jobs:
+  test:
+    runs-on: ubuntu-latest
+    name: Test uroman MCP Server
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+          cache-dependency-path: 'serverless/package-lock.json'
+
+      - name: Install dependencies
+        run: |
+          cd serverless
+          npm ci
+
+      - name: Run core tests
+        run: |
+          cd serverless
+          npm test
+
+      - name: Build Cloudflare Worker
+        run: |
+          cd serverless
+          npm run build:cloudflare
+
+      - name: Test Cloudflare adapter
+        run: |
+          cd serverless
+          npx vitest run tests/cloudflare-adapter.test.js
+
+  deploy-staging:
+    runs-on: ubuntu-latest
+    name: Deploy to Staging
+    needs: test
+    if: github.event_name == 'pull_request'
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+          cache-dependency-path: 'serverless/package-lock.json'
+
+      - name: Install dependencies
+        run: |
+          cd serverless
+          npm ci
+
+      - name: Build Worker
+        run: |
+          cd serverless
+          npm run build:cloudflare
+
+      - name: Deploy to Cloudflare Workers (Staging)
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          environment: 'staging'
+          workingDirectory: '.'
+
+  deploy-production:
+    runs-on: ubuntu-latest
+    name: Deploy to Production
+    needs: test
+    if: github.ref == 'refs/heads/main' || github.ref == 'refs/heads/master'
+    steps:
+      - uses: actions/checkout@v4
+
+      - name: Setup Node.js
+        uses: actions/setup-node@v4
+        with:
+          node-version: '18'
+          cache: 'npm'
+          cache-dependency-path: 'serverless/package-lock.json'
+
+      - name: Install dependencies
+        run: |
+          cd serverless
+          npm ci
+
+      - name: Build Worker
+        run: |
+          cd serverless
+          npm run build:cloudflare
+
+      - name: Deploy to Cloudflare Workers (Production)
+        uses: cloudflare/wrangler-action@v3
+        with:
+          apiToken: ${{ secrets.CLOUDFLARE_API_TOKEN }}
+          environment: 'production'
+          workingDirectory: '.'
+
+      - name: Post-deployment health check
+        run: |
+          echo "Waiting for deployment to be ready..."
+          sleep 30
+          
+          # Health check
+          WORKER_URL="https://uroman-mcp-server.your-subdomain.workers.dev"
+          
+          echo "Testing health endpoint..."
+          curl -f "$WORKER_URL/health" || echo "Health check failed"
+          
+          echo "Testing MCP tools list..."
+          curl -f -X POST "$WORKER_URL" \
+            -H "Content-Type: application/json" \
+            -d '{"jsonrpc":"2.0","method":"tools/list","id":1}' || echo "Tools list failed" 
