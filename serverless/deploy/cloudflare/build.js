@@ -15,8 +15,8 @@ async function buildCloudflareWorker() {
   console.log('🔨 Building uroman MCP server for Cloudflare Workers...');
 
   try {
-    // Ensure dist directory exists
-    const distDir = path.join(__dirname, '../../dist');
+    // Ensure dist directory exists at root level for Cloudflare Pages
+    const distDir = path.join(__dirname, '../../../dist');
     if (!fs.existsSync(distDir)) {
       fs.mkdirSync(distDir, { recursive: true });
     }
