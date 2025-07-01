@@ -2,47 +2,19 @@
   "name": "uroman-mcp-server",
   "version": "1.0.0",
   "description": "Universal romanization MCP server for serverless deployment",
-  "main": "dist/index.js",
+  "main": "serverless/dist/cloudflare.js",
   "type": "module",
   "directories": {
     "test": "tests"
   },
   "scripts": {
-    "build": "tsc && npm run build:adapters",
-    "build:adapters": "npm run build:cloudflare && npm run build:netlify && npm run build:vercel && npm run build:aws",
-    "build:cloudflare": "node deploy/cloudflare/build.js",
-    "build:netlify": "esbuild src/adapters/netlify.ts --bundle --format=cjs --target=node18 --outfile=deploy/netlify/functions/mcp-server.js --external:uroman",
-    "build:vercel": "esbuild src/adapters/vercel.ts --bundle --format=cjs --target=node18 --outfile=deploy/vercel/api/mcp-server.js --external:uroman",
-    "build:aws": "esbuild src/adapters/aws-lambda.ts --bundle --format=cjs --target=node18 --outfile=deploy/aws/index.js --external:uroman",
-    "dev": "tsx src/adapters/local.ts",
-    "test": "node run-tests.js",
-    "test:core": "node run-tests.js --core", 
-    "test:mcp": "node run-tests.js --mcp",
-    "test:unit": "vitest run src/**/*.test.ts",
-    "test:integration": "vitest run tests/integration/**/*.test.ts",
-    "test:e2e": "vitest run tests/e2e/**/*.test.ts",
-    "test:coverage": "vitest run --coverage",
-    "lint": "eslint src --ext .ts",
-    "type-check": "tsc --noEmit"
+    "build": "cd serverless && npm ci && npm run build:cloudflare",
+    "test": "cd serverless && npm test",
+    "postinstall": "cd serverless && npm ci"
   },
   "keywords": ["mcp", "romanization", "serverless", "uroman", "unicode"],
   "author": "External Contributor",
   "license": "Apache-2.0",
-  "dependencies": {
-    "@modelcontextprotocol/sdk": "^0.5.0"
-  },
-  "devDependencies": {
-    "@types/node": "^20.0.0",
-    "@typescript-eslint/eslint-plugin": "^6.0.0",
-    "@typescript-eslint/parser": "^6.0.0",
-    "esbuild": "^0.19.0",
-    "eslint": "^8.0.0",
-    "tsx": "^4.0.0",
-    "typescript": "^5.0.0",
-    "vitest": "^1.0.0",
-    "@vitest/coverage-v8": "^1.0.0"
-  },
-  "peerDependencies": {
-    "uroman": ">=1.3.1"
-  }
+  "dependencies": {},
+  "devDependencies": {}
 } 
