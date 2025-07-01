@@ -73,9 +73,10 @@ wrangler deploy --env staging
    - Click **Create application** > **Pages** > **Connect to Git**
    - Select your GitHub repository
    - Choose **Framework preset**: None
-   - **Build command**: `cd serverless && npm install && npm run build:cloudflare`
+   - **Build command**: `cd serverless && npm ci && npm run build:cloudflare`
    - **Build output directory**: `serverless/dist`
    - **Root directory**: `/` (leave empty)
+   - **Install command**: Leave empty (auto-detected)
 
 2. **Environment Variables** (Optional):
    - Add `UROMAN_CACHE_SIZE=1000`
