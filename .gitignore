@@ -68,3 +68,29 @@ dist
 # old Perl uroman
 bin/uroman.py
 lib/NLP/Romanizer.pm
+
+# Python
+__pycache__/
+*.py[cod]
+*$py.class
+*.so
+.Python
+env/
+venv/
+.pytest_cache/
+
+# Modal
+.modal/
+
+# IDEs
+.vscode/
+.idea/
+*.swp
+*.swo
+
+# OS
+.DS_Store
+Thumbs.db
+
+# Logs
+*.log
