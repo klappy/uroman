@@ -13,22 +13,32 @@
    ```
    This will open a browser to create/login to your Modal account.
 
-3. **Test Locally**
+3. **Choose Your Deployment**
+
+   **Option A: Simple REST API**
    ```bash
    cd modal-deployment
-   modal run uroman_modal.py
+   modal deploy uroman_modal_simple.py
    ```
 
-4. **Deploy to Production**
+   **Option B: MCP Server (for AI assistants)**
    ```bash
+   cd modal-deployment
+   modal deploy uroman_mcp_modal.py
+   ```
+
+   **Option C: Production (with monitoring)**
+   ```bash
+   cd modal-deployment
    modal deploy uroman_modal_production.py
    ```
 
 ## What You Get
 
 After deployment, Modal will give you URLs like:
-- `https://your-username--uroman-service-prod-romanize-endpoint.modal.run` (API endpoint)
-- `https://your-username--uroman-service-prod-health-check.modal.run` (Health check)
+- `https://your-username--uroman-service-simple-romanize-endpoint.modal.run` (Simple API)
+- `https://your-username--uroman-mcp-server-mcp-endpoint.modal.run` (MCP Server)
+- `https://your-username--uroman-service-prod-romanize-endpoint.modal.run` (Production)
 
 ## Example API Usage
 
@@ -54,7 +64,7 @@ curl -X POST https://your-endpoint.modal.run \
 
 ## Monitoring
 
-Check the health endpoint:
+Check the health endpoint (production deployment only):
 ```bash
 curl https://your-health-endpoint.modal.run
 ```

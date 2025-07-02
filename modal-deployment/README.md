@@ -6,6 +6,12 @@ Deploy the Uroman universal romanizer as a serverless API on Modal.ai.
 
 This deploys uroman (a tool that converts text in any script to Latin alphabet) as a cloud service using Modal.ai. Think of it as Google Translate's alphabet-only cousin, but hosted on steroids (Modal's infrastructure).
 
+## Available Deployments
+
+- **Simple REST API**: `uroman_modal_simple.py` - Basic HTTP endpoint
+- **MCP Server**: `uroman_mcp_modal.py` - For AI assistants (Claude, etc.)
+- **Production**: `uroman_modal_production.py` - Full-featured with monitoring
+
 ## Setup
 
 1. Install Modal:
@@ -20,12 +26,23 @@ modal setup
 
 3. Test locally:
 ```bash
-modal run uroman_modal.py
+# For simple REST API
+modal run uroman_modal_simple.py
+
+# For MCP server
+modal run uroman_mcp_modal.py
 ```
 
 4. Deploy to Modal:
 ```bash
-modal deploy uroman_modal.py
+# For simple REST API
+modal deploy uroman_modal_simple.py
+
+# For MCP server
+modal deploy uroman_mcp_modal.py
+
+# For production deployment
+modal deploy uroman_modal_production.py
 ```
 
 ## Usage
@@ -59,7 +76,7 @@ Response:
 Run the integration tests to ensure everything works:
 
 ```bash
-cd .. && python -m pytest tests/test_integration_final.py -v
+cd .. && python -m pytest tests/test_comprehensive_suite.py -v
 ```
 
 ## Performance Notes
@@ -80,12 +97,14 @@ If you get import errors, make sure the uroman directory structure is correct:
 ```
 uroman/
 ├── modal-deployment/
-│   ├── uroman_modal.py
+│   ├── uroman_modal_simple.py
+│   ├── uroman_mcp_modal.py
+│   ├── uroman_modal_production.py
 │   └── README.md
 ├── uroman/
 │   ├── __init__.py
 │   ├── uroman.py
 │   └── data/
 └── tests/
-    └── test_integration_final.py
+    └── test_comprehensive_suite.py
 ```
