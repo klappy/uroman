@@ -14,7 +14,7 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 import uroman
 
 # Endpoints
-REST_ENDPOINT = "https://klappy--uroman-mcp-server-romanize-endpoint.modal.run"
+REST_ENDPOINT = "https://klappy--uroman-service-romanize-endpoint.modal.run"
 TEXT_DIR = Path(__file__).parent.parent / "text"
 
 def run_comparison():

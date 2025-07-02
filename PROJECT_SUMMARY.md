@@ -57,7 +57,7 @@ uroman/
 │   ├── core/              # Platform-agnostic logic
 │   ├── adapters/          # Platform adapters
 │   └── deployments/       # Platform-specific configs
-├── modal-deployment/       # Modal.ai specific (legacy)
+├── serverless/             # Multi-cloud serverless architecture
 ├── tests/                  # Test suite
 └── text/                   # Test data for 23 languages
 ```

@@ -11,8 +11,8 @@ from pathlib import Path
 from collections import defaultdict
 
 # Configuration
-MCP_ENDPOINT = "https://klappy--uroman-mcp-server-mcp-endpoint.modal.run"
-REST_ENDPOINT = "https://klappy--uroman-mcp-server-romanize-endpoint.modal.run"
+MCP_ENDPOINT = "https://klappy--uroman-service-mcp-endpoint.modal.run"
+REST_ENDPOINT = "https://klappy--uroman-service-romanize-endpoint.modal.run"
 
 # Language code mapping
 LANG_CODES = {

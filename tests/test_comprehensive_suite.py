@@ -21,8 +21,8 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 import uroman
 
 # Configuration
-MCP_ENDPOINT = "https://klappy--uroman-mcp-server-mcp-endpoint.modal.run"
-REST_ENDPOINT = "https://klappy--uroman-mcp-server-romanize-endpoint.modal.run"
+MCP_ENDPOINT = "https://klappy--uroman-service-mcp-endpoint.modal.run"
+REST_ENDPOINT = "https://klappy--uroman-service-romanize-endpoint.modal.run"
 
 # Test data directory
 TEXT_DIR = Path(__file__).parent.parent / "text"

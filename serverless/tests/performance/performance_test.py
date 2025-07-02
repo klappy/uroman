@@ -7,7 +7,7 @@ import time
 import requests
 import statistics
 
-MCP_ENDPOINT = "https://klappy--uroman-mcp-server-mcp-endpoint.modal.run"
+MCP_ENDPOINT = "https://klappy--uroman-service-mcp-endpoint.modal.run"
 
 def test_latency(n=10):
     """Test average latency"""

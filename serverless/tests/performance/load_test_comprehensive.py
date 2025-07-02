@@ -14,8 +14,8 @@ from collections import defaultdict
 import threading
 
 # Configuration
-MCP_ENDPOINT = "https://klappy--uroman-mcp-server-mcp-endpoint.modal.run"
-REST_ENDPOINT = "https://klappy--uroman-mcp-server-romanize-endpoint.modal.run"
+MCP_ENDPOINT = "https://klappy--uroman-service-mcp-endpoint.modal.run"
+REST_ENDPOINT = "https://klappy--uroman-service-romanize-endpoint.modal.run"
 
 # Thread-safe counters
 request_times = []

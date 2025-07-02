@@ -17,7 +17,7 @@ sys.path.insert(0, str(Path(__file__).parent.parent))
 import uroman
 
 # Configuration
-REST_ENDPOINT = "https://klappy--uroman-mcp-server-romanize-endpoint.modal.run"
+REST_ENDPOINT = "https://klappy--uroman-service-romanize-endpoint.modal.run"
 
 def analyze_tipping_point():
     """Analyze when remote becomes faster than local"""
