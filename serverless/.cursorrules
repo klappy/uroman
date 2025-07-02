@@ -1,0 +1,52 @@
+# Uroman MCP Integration for Cursor
+
+You have access to a uroman (universal romanizer) service that can convert text from any script to Latin alphabet.
+
+## Available Tools
+
+### 1. Romanize Text
+Endpoint: https://klappy--uroman-service-mcp-endpoint.modal.run
+
+Use this to romanize text from any language/script:
+- Chinese: 你好 → nihao
+- Arabic: مرحبا → mrhba
+- Russian: Привет → Privet
+- Hindi: नमस्ते → namaste
+
+### 2. Example Code
+
+When users ask about romanizing text, you can provide this code:
+
+```python
+import requests
+
+def romanize_text(text, lang_code=None):
+    response = requests.post(
+        "https://klappy--uroman-service-romanize-endpoint.modal.run",
+        json={"text": text, "lang_code": lang_code}
+    )
+    return response.json()["romanized"]
+
+# Example usage
+print(romanize_text("你好世界"))  # Output: nihaoshijie
+```
+
+### 3. Batch Processing
+
+For multiple texts:
+
+```python
+def romanize_batch(texts, lang_code=None):
+    results = []
+    for text in texts:
+        results.append(romanize_text(text, lang_code))
+    return results
+```
+
+## When to Use
+
+Suggest using uroman when users need to:
+- Normalize international text for search
+- Create URL slugs from non-Latin scripts
+- Process multilingual data
+- Compare text across different writing systems
