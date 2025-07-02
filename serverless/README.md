@@ -13,15 +13,35 @@ serverless/
 │
 ├── adapters/               # Platform-specific adapters
 │   ├── base_adapter.py     # Abstract base class
-│   ├── modal_adapter.py    # Modal.ai adapter
-│   ├── aws_lambda_adapter.py # AWS Lambda adapter
-│   └── (more coming...)    # Cloudflare, Vercel, etc.
+│   ├── modal_adapter.py    # Modal.ai adapter ✅
+│   ├── aws_lambda_adapter.py # AWS Lambda adapter ✅
+│   └── cloudflare_adapter.py # ⚠️ NOT VIABLE (see below)
 │
 └── deployments/           # Platform-specific deployments
-    ├── modal/            # Modal.ai deployment
+    ├── modal/            # Modal.ai deployment ✅
     ├── aws/              # AWS Lambda deployment
-    └── (more coming...)  # Other platforms
+    └── cloudflare/      # ⚠️ NOT VIABLE (see LIMITATIONS.md)
 ```
+
+## ⚠️ Platform Compatibility
+
+| Platform | Status | Notes |
+|----------|--------|-------|
+| Modal.ai | ✅ Fully Working | Best choice - no size limits, full Python |
+| AWS Lambda | ✅ Ready | 250MB limit is sufficient |
+| Google Cloud Functions | ✅ Compatible | Similar to AWS Lambda |
+| Azure Functions | ✅ Compatible | Similar to AWS Lambda |
+| **Cloudflare Workers** | ❌ **NOT VIABLE** | See [detailed limitations](deployments/cloudflare/LIMITATIONS.md) |
+| Vercel | 🔄 Possible | 50MB limit, needs testing |
+
+### Why Cloudflare Workers Don't Work
+
+After extensive testing, Cloudflare Workers cannot support uroman due to:
+- **10MB size limit** (uroman needs 13-15MB minimum)
+- **No regex module** (only basic `re` without Unicode support)
+- **Limited Python support** (experimental, missing critical features)
+
+**Read the full analysis: [deployments/cloudflare/LIMITATIONS.md](deployments/cloudflare/LIMITATIONS.md)**
 
 ## 🎯 Design Principles
 
@@ -32,7 +52,7 @@ serverless/
 
 ## 🚀 Quick Start
 
-### Deploy to Modal.ai
+### Deploy to Modal.ai (Recommended)
 
 ```bash
 cd serverless/deployments/modal
@@ -47,14 +67,15 @@ sam build
 sam deploy --guided
 ```
 
-### Deploy to Cloudflare Workers
-
-```bash
-cd serverless/deployments/cloudflare
-wrangler deploy
-```
-
 ## 🔧 Adding a New Platform
+
+Before adding a new platform, verify it supports:
+- ✅ At least 15MB deployment size
+- ✅ Full Python 3.8+ support
+- ✅ The `regex` module (not just `re`)
+- ✅ Full Unicode support
+
+Then:
 
 1. Create a new adapter in `serverless/adapters/`:
 
@@ -118,20 +139,24 @@ cd serverless
 python -m pytest tests/ -v
 ```
 
-## 📊 Performance
+## 📊 Performance Comparison
 
-- **Cold Start**: Varies by platform (Modal: 5-10s, AWS: 1-5s, Cloudflare: <1s)
-- **Warm Response**: <100ms across all platforms
-- **Memory Usage**: ~200MB (configurable per platform)
+| Platform | Cold Start | Warm Response | Size Limit | Python Support |
+|----------|------------|---------------|------------|----------------|
+| Modal.ai | 5-10s | <100ms | None | Full Native |
+| AWS Lambda | 1-5s | <100ms | 250MB | Full Native |
+| Google Cloud | 1-5s | <100ms | 100MB | Full Native |
+| ~~Cloudflare~~ | ~~<1s~~ | ~~N/A~~ | ~~10MB~~ | ~~Experimental~~ |
 
 ## 🤝 Contributing
 
 To add support for a new platform:
 
-1. Create an adapter in `serverless/adapters/`
-2. Add deployment configuration
-3. Include tests
-4. Update this README
+1. **First check platform limitations** (see Cloudflare example)
+2. Create an adapter in `serverless/adapters/`
+3. Add deployment configuration
+4. Include tests
+5. Update this README
 
 ## 📄 License
 
