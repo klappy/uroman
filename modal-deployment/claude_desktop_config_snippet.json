@@ -1,0 +1,13 @@
+{
+  "mcpServers": {
+    "uroman": {
+      "command": "curl",
+      "args": [
+        "-X", "POST",
+        "https://klappy--uroman-mcp-server-mcp-endpoint.modal.run",
+        "-H", "Content-Type: application/json",
+        "-d", "@-"
+      ]
+    }
+  }
+}
