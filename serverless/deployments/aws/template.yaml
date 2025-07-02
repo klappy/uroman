@@ -1,0 +1,65 @@
+AWSTemplateFormatVersion: '2010-09-09'
+Transform: AWS::Serverless-2016-10-31
+Description: Uroman Universal Romanizer Serverless API
+
+Globals:
+  Function:
+    Timeout: 30
+    MemorySize: 512
+    Runtime: python3.11
+    Environment:
+      Variables:
+        PYTHONPATH: /var/runtime:/opt/python
+
+Resources:
+  UromanLayer:
+    Type: AWS::Lambda::LayerVersion
+    Properties:
+      LayerName: uroman-dependencies
+      Description: Uroman core and dependencies
+      Content:
+        S3Bucket: !Ref DeploymentBucket
+        S3Key: layers/uroman-layer.zip
+      CompatibleRuntimes:
+        - python3.11
+
+  RomanizeFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: .
+      Handler: lambda_function.lambda_handler
+      Layers:
+        - !Ref UromanLayer
+      Events:
+        RomanizeAPI:
+          Type: Api
+          Properties:
+            Path: /romanize
+            Method: POST
+        HealthCheck:
+          Type: Api
+          Properties:
+            Path: /health
+            Method: GET
+
+  MCPFunction:
+    Type: AWS::Serverless::Function
+    Properties:
+      CodeUri: .
+      Handler: lambda_function.mcp_handler
+      Layers:
+        - !Ref UromanLayer
+      Events:
+        MCPAPI:
+          Type: Api
+          Properties:
+            Path: /mcp
+            Method: POST
+
+Outputs:
+  RomanizeAPI:
+    Description: "API Gateway endpoint URL for romanization"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/romanize"
+  MCPAPI:
+    Description: "API Gateway endpoint URL for MCP"
+    Value: !Sub "https://${ServerlessRestApi}.execute-api.${AWS::Region}.amazonaws.com/Prod/mcp"
